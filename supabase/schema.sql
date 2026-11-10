@@ -36,6 +36,10 @@ grant execute on function public.is_tiendita_admin() to authenticated;
 alter table public.products enable row level security;
 alter table public.ads enable row level security;
 alter table public.admin_users enable row level security;
+-- Permisos SQL necesarios para que la API REST pueda aplicar las políticas RLS.
+grant select on public.products, public.ads to anon, authenticated;
+grant insert, update, delete on public.products, public.ads to authenticated;
+grant select on public.admin_users to authenticated;
 drop policy if exists "Public can read published products" on public.products;
 create policy "Public can read published products" on public.products for select to anon,authenticated using(is_published=true);
 drop policy if exists "Admins can manage products" on public.products;
